@@ -10,14 +10,11 @@ let apiClient = MarvelAPIClient(publicKey: "650e801e1408159969078d2a1361c71c",
 apiClient.send(GetCharacters()) { response in
 	print("\nGetCharacters finished:")
 
-	switch response {
-	case .success(let dataContainer):
+	response.map { dataContainer in
 		for character in dataContainer.results {
 			print("  Title: \(character.name ?? "Unnamed character")")
 			print("  Thumbnail: \(character.thumbnail?.url.absoluteString ?? "None")")
 		}
-	case .failure(let error):
-		print(error)
 	}
 }
 
@@ -25,13 +22,14 @@ apiClient.send(GetCharacters()) { response in
 apiClient.send(GetComics(titleStartsWith: "Avengers", format: .digital)) { response in
 	print("\nGetComics finished:")
 
-	switch response {
-	case .success(let dataContainer):
+	do {
+		let dataContainer = try response.get()
+
 		for comic in dataContainer.results {
 			print("  Title: \(comic.title ?? "Unnamed comic")")
 			print("  Thumbnail: \(comic.thumbnail?.url.absoluteString ?? "None")")
 		}
-	case .failure(let error):
+	} catch {
 		print(error)
 	}
 }

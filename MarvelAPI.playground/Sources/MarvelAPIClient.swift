@@ -1,5 +1,7 @@
 import Foundation
 
+public typealias ResultCallback<Value> = (Result<Value, Error>) -> Void
+
 /// Implementation of a generic-based Marvel API client
 public class MarvelAPIClient {
 	private let baseEndpointUrl = URL(string: "https://gateway.marvel.com:443/v1/public/")!
